@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LoTuz — Play Your Way</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="logo">L</span><span>LoTuz<span class="blue">.</span><small>COMMUNITY</small></span></a>
+  <nav><a href="#servers" class="active">Servers</a><a href="#skins">Skins</a><a href="#leaderboard">Leaderboard</a><a href="#maps">Maps</a></nav>
+  <div class="top-actions"><span class="online-dot">● COMMUNITY</span><button id="steamLogin" class="steam">Sign in with Steam</button><button id="adminToggle" class="admin-btn">Admin demo</button></div>
+</header>
+<main>
+<section class="hero">
+ <div class="hero-copy"><div class="eyebrow"><i></i> YOUR MATCH. YOUR RULES.</div><h1>Choose your fight.<br><span>Play on LoTuz.</span></h1>
+ <p>Өөрийн горим, map, skin-ээ сонго. Тогло. ELO-оо ахиул.</p>
+ <div class="hero-buttons"><a class="primary" href="#servers">Find a server <b>↗</b></a><a class="secondary" href="#leaderboard">View rankings</a></div>
+ <div class="stats"><div><strong>25</strong><small>SERVER SLOTS PLANNED</small></div><div><strong>1–10,000</strong><small>ELO RANGE</small></div><div><strong>7,000</strong><small>GLOBAL FROM</small></div></div></div>
+ <div class="hero-art"><div class="ring ring1"></div><div class="ring ring2"></div><div class="crosshair">✳</div><div class="art-label"><span>LOTUZ MATCHMAKING</span><b>READY WHEN YOU ARE.</b><small>COMMUNITY PROJECT / CS2</small></div></div>
+</section>
+
+<section id="servers" class="section">
+ <div class="section-head"><div><div class="eyebrow">JOIN THE ACTION</div><h2>Game servers <span class="count" id="serverCount">25</span></h2><p class="muted">Серверийн IP тохируулсан үед хуулж аваад шууд холбогдоно.</p></div></div>
+ <div class="toolbar"><div id="modeFilters" class="filters"></div><label class="search">⌕ <input id="serverSearch" placeholder="Map эсвэл server хайх..."></label></div>
+ <div id="serverGrid" class="server-grid"></div>
+ <p class="footnote"><b>Тайлбар:</b> Эхний байдлаар серверүүд “IP тохируулаагүй” гэж харагдана. Бодит IP/port болон ажиллаж байгаа CS2 сервергүйгээр холболт хийх боломжгүй.</p>
+</section>
+
+<section id="skins" class="section">
+ <div class="section-head"><div><div class="eyebrow">MAKE IT YOURS</div><h2>Skin locker</h2><p class="muted">Жишээ сонголтын UI — skin тоглоом дотор харагдахад server plugin хэрэгтэй.</p></div><button id="saveSkin" class="primary small">Save selection</button></div>
+ <div class="skin-layout"><div class="skin-categories" id="skinCategories"></div><div class="skin-grid" id="skinGrid"></div></div>
+ <p class="footnote">Зохиомол/custom skin-үүд зөвхөн тусгай серверийн plugin, custom model/material болон тоглогчийн client-д нийцсэн asset-тай үед ажиллана. Энэ загвар Steam inventory-д skin нэмэхгүй.</p>
+</section>
+
+<section id="leaderboard" class="section">
+ <div class="section-head"><div><div class="eyebrow">EARN YOUR PLACE</div><h2>LoTuz leaderboard</h2><p class="muted">Global: 7,000 ELO · Max: 10,000 · Start: 1,000</p></div><label class="search">⌕ <input id="playerSearch" placeholder="Тоглогч хайх..."></label></div>
+ <div class="table-wrap"><table><thead><tr><th>#</th><th>PLAYER</th><th>RANK</th><th>W</th><th>L</th><th class="right">ELO</th></tr></thead><tbody id="leaderboard"></tbody></table></div>
+ <p class="footnote">Leaderboard одоогоор demo өгөгдөлтэй. Бодит оноог баталгаажсан match result-оос backend тооцох ёстой.</p>
+</section>
+
+<section id="maps" class="section">
+ <div class="section-head"><div><div class="eyebrow">MAP POOL</div><h2>CS2 maps</h2><p class="muted">Сервер дээр суусан map-уудыг л бодитоор сонгож болно.</p></div></div>
+ <div class="map-pool" id="mapPool"></div>
+</section>
+
+<section id="admin" class="section admin-panel hidden">
+ <div class="section-head"><div><div class="eyebrow">CONTROL ROOM</div><h2>Admin control panel <span class="demo-tag">DEMO</span></h2><p class="muted">Зөвхөн UI demo. Жинхэнэ эрхийн хамгаалалт backend дээр хэрэгтэй.</p></div><button id="closeAdmin" class="secondary">Close</button></div>
+ <div class="admin-grid">
+  <label>Server<select id="adminServer"></select></label>
+  <label>Map<select id="adminMap"></select></label>
+  <label>Server IP<input id="adminIp" placeholder="e.g. 203.0.113.10"></label>
+  <label>Port<input id="adminPort" placeholder="27015" inputmode="numeric"></label>
+  <label>Admin SteamID<input id="adminSteamId" placeholder="Backend-д баталгаажуулна"></label>
+  <label>Server status<select id="adminStatus"><option value="offline">Offline / тохируулаагүй</option><option value="online">Online (demo only)</option></select></label>
+ </div>
+ <div class="admin-actions"><button id="applyAdmin" class="primary">Apply demo settings</button><button id="exportConfig" class="secondary">Export config JSON</button></div>
+ <p class="footnote">Энэ browser demo нь тохиргоог зөвхөн энэ хуудсанд түр харуулна. Жинхэнэ серверт map солих, админ болгох, skin өгөх үйлдэл хийхгүй.</p>
+</section>
+<footer><a class="brand" href="#"><span class="logo">L</span><span>LoTuz<span class="blue">.</span></span></a><span>Community CS2 platform concept</span><span>Unofficial · Not affiliated with Valve</span></footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
