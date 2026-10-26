@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LoTuz — Play Your Way</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="logo">L</span><span>LoTuz<span class="blue">.</span><small>COMMUNITY</small></span></a>
+  <nav><a href="#servers" class="active">Servers</a><a href="#skins">Skins</a><a href="#leaderboard">Leaderboard</a><a href="#maps">Maps</a></nav>
+  <div class="top-actions"><span class="online-dot">● COMMUNITY</span><button id="steamLogin" class="steam">Sign in with Steam</button><button id="adminToggle" class="admin-btn">Admin demo</button></div>
+</header>
+<main>
+<section class="hero">
+ <div class="hero-copy"><div class="eyebrow"><i></i> YOUR MATCH. YOUR RULES.</div><h1>Choose your fight.<br><span>Play on LoTuz.</span></h1>
+ <p>Өөрийн горим, map, skin-ээ сонго. Тогло. ELO-оо ахиул.</p>
+ <div class="hero-buttons"><a class="primary" href="#servers">Find a server <b>↗</b></a><a class="secondary" href="#leaderboard">View rankings</a></div>
+ <div class="stats"><div><strong>25</strong><small>SERVER SLOTS PLANNED</small></div><div><strong>1–10,000</strong><small>ELO RANGE</small></div><div><strong>7,000</strong><small>GLOBAL FROM</small></div></div></div>
+ <div class="hero-art"><div class="ring ring1"></div><div class="ring ring2"></div><div class="crosshair">✳</div><div class="art-label"><span>LOTUZ MATCHMAKING</span><b>READY WHEN YOU ARE.</b><small>COMMUNITY PROJECT / CS2</small></div></div>
+</section>
+
+<section id="servers" class="section">
+ <div class="section-head"><div><div class="eyebrow">JOIN THE ACTION</div><h2>Game servers <span class="count" id="serverCount">25</span></h2><p class="muted">Серверийн IP тохируулсан үед хуулж аваад шууд холбогдоно.</p></div></div>
+ <div class="toolbar"><div id="modeFilters" class="filters"></div><label class="search">⌕ <input id="serverSearch" placeholder="Map эсвэл server хайх..."></label></div>
+ <div id="serverGrid" class="server-grid"></div>
+ <p class="footnote"><b>Тайлбар:</b> Эхний байдлаар серверүүд “IP тохируулаагүй” гэж харагдана. Бодит IP/port болон ажиллаж байгаа CS2 сервергүйгээр холболт хийх боломжгүй.</p>
+</section>
+
+<section id="skins" class="section">
+ <div class="section-head"><div><div class="eyebrow">MAKE IT YOURS</div><h2>Skin locker</h2><p class="muted">Жишээ сонголтын UI — skin тоглоом дотор харагдахад server plugin хэрэгтэй.</p></div><button id="saveSkin" class="primary small">Save selection</button></div>
+ <div class="skin-layout"><div class="skin-categories" id="skinCategories"></div><div class="skin-grid" id="skinGrid"></div></div>
+ <p class="footnote">Зохиомол/custom skin-үүд зөвхөн тусгай серверийн plugin, custom model/material болон тоглогчийн client-д нийцсэн asset-тай үед ажиллана. Энэ загвар Steam inventory-д skin нэмэхгүй.</p>
+</section>
+
+<section id="leaderboard" class="section">
+ <div class="section-head"><div><div class="eyebrow">EARN YOUR PLACE</div><h2>LoTuz leaderboard</h2><p class="muted">Global: 7,000 ELO · Max: 10,000 · Start: 1,000</p></div><label class="search">⌕ <input id="playerSearch" placeholder="Тоглогч хайх..."></label></div>
+ <div class="table-wrap"><table><thead><tr><th>#</th><th>PLAYER</th><th>RANK</th><th>W</th><th>L</th><th class="right">ELO</th></tr></thead><tbody id="leaderboard"></tbody></table></div>
+ <p class="footnote">Leaderboard одоогоор demo өгөгдөлтэй. Бодит оноог баталгаажсан match result-оос backend тооцох ёстой.</p>
+</section>
+
+<section id="maps" class="section">
+ <div class="section-head"><div><div class="eyebrow">MAP POOL</div><h2>CS2 maps</h2><p class="muted">Сервер дээр суусан map-уудыг л бодитоор сонгож болно.</p></div></div>
+ <div class="map-pool" id="mapPool"></div>
+</section>
+
+<section id="admin" class="section admin-panel hidden">
+ <div class="section-head"><div><div class="eyebrow">CONTROL ROOM</div><h2>Admin control panel <span class="demo-tag">DEMO</span></h2><p class="muted">Зөвхөн UI demo. Жинхэнэ эрхийн хамгаалалт backend дээр хэрэгтэй.</p></div><button id="closeAdmin" class="secondary">Close</button></div>
+ <div class="admin-grid">
+  <label>Server<select id="adminServer"></select></label>
+  <label>Map<select id="adminMap"></select></label>
+  <label>Server IP<input id="adminIp" placeholder="e.g. 203.0.113.10"></label>
+  <label>Port<input id="adminPort" placeholder="27015" inputmode="numeric"></label>
+  <label>Admin SteamID<input id="adminSteamId" placeholder="Backend-д баталгаажуулна"></label>
+  <label>Server status<select id="adminStatus"><option value="offline">Offline / тохируулаагүй</option><option value="online">Online (demo only)</option></select></label>
+ </div>
+ <div class="admin-actions"><button id="applyAdmin" class="primary">Apply demo settings</button><button id="exportConfig" class="secondary">Export config JSON</button></div>
+ <p class="footnote">Энэ browser demo нь тохиргоог зөвхөн энэ хуудсанд түр харуулна. Жинхэнэ серверт map солих, админ болгох, skin өгөх үйлдэл хийхгүй.</p>
+</section>
+<footer><a class="brand" href="#"><span class="logo">L</span><span>LoTuz<span class="blue">.</span></span></a><span>Community CS2 platform concept</span><span>Unofficial · Not affiliated with Valve</span></footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
+:root{--bg:#070f1b;--panel:#0d1b2c;--panel2:#11243a;--line:#223a54;--text:#edf5ff;--muted:#8da3bc;--blue:#67bdff;--gold:#ffca79;--green:#5ee0a4;--red:#ff8585}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:85px}body{margin:0;background:radial-gradient(ellipse at 77% 3%,#132d49 0,transparent 34%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input,select{font:inherit}.topbar{height:76px;padding:0 max(calc((100vw - 1180px)/2),24px);display:flex;align-items:center;justify-content:space-between;gap:24px;position:sticky;top:0;z-index:9;background:#07111fea;border-bottom:1px solid #1c3046;backdrop-filter:blur(16px)}.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;line-height:1.05;letter-spacing:-.6px;white-space:nowrap}.brand small{display:block;font-size:8px;letter-spacing:2px;color:#7f98b2;margin-top:5px}.logo{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(140deg,#78d1ff,#2678be);color:#07111c;font-size:22px}.blue{color:var(--blue)}nav{display:flex;gap:24px;color:#91a6bd;font-size:12px}nav a:hover,nav a.active{color:white}.top-actions{display:flex;align-items:center;gap:10px}.online-dot{font-size:9px;letter-spacing:1px;color:var(--green);white-space:nowrap}.steam,.admin-btn,.primary,.secondary,.filter{cursor:pointer;border-radius:8px;font-weight:750}.steam{padding:10px 12px;background:#173d5d;border:1px solid #2b5b80;color:white;font-size:11px}.admin-btn{padding:10px;background:transparent;border:1px solid #31445a;color:#aabdd1;font-size:10px;white-space:nowrap}
+main{max-width:1180px;padding:0 24px;margin:auto}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:75px 0 66px;min-height:440px}.eyebrow{font-size:10px;font-weight:850;letter-spacing:2px;color:var(--blue)}.eyebrow i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #5ee0a4;margin-right:7px}h1{font-size:clamp(42px,5.5vw,68px);line-height:1.02;letter-spacing:-3px;margin:18px 0;font-weight:900}h1 span{color:var(--blue)}.hero-copy>p{color:#a7bbd0;font-size:14px}.hero-buttons{display:flex;gap:10px;margin-top:24px}.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:18px;padding:12px 16px;border:1px solid #3b91ce;background:#2d86c9;color:white;font-size:12px}.primary:hover{background:#3b9ce1}.secondary{background:#112238;border-color:#2b435d;color:#c7d8e8}.small{padding:10px 13px}.stats{display:flex;gap:35px;margin-top:39px}.stats div{display:grid;gap:3px}.stats strong{font-size:20px}.stats small{font-size:8px;letter-spacing:1.2px;color:#849bb4}.hero-art{height:285px;position:relative;overflow:hidden;border:1px solid #25425f;border-radius:18px;background:linear-gradient(140deg,#102945,#0b1727 70%);display:grid;place-items:center}.hero-art:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49%,#2b4b690c 50%),linear-gradient(transparent 49%,#2b4b690c 50%);background-size:32px 32px}.ring{position:absolute;border:1px solid #4ca8ed3b;border-radius:50%;aspect-ratio:1}.ring1{width:270px}.ring2{width:205px;border-color:#69c2ff60}.crosshair{font-size:110px;color:#62baff20;text-shadow:0 0 35px #58b8ff20}.art-label{position:absolute;bottom:19px;left:20px;right:20px;display:grid;gap:4px}.art-label span,.art-label small{font-size:9px;letter-spacing:1.6px;color:#8ca6c0}.art-label b{font-size:17px;letter-spacing:.5px}
+.section{padding:36px 0 43px;border-top:1px solid #1b3046}.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:21px}h2{font-size:26px;letter-spacing:-.7px;margin:5px 0}.count{font-size:13px;color:var(--blue);vertical-align:middle;border:1px solid #254a6c;padding:3px 7px;border-radius:6px}.muted{color:var(--muted);font-size:12px;margin:5px 0 0}.toolbar{display:flex;justify-content:space-between;gap:12px;margin-bottom:15px}.filters{display:flex;gap:7px;flex-wrap:wrap}.filter{background:#0e1e30;border:1px solid #29435e;color:#9fb4c9;padding:8px 12px;font-size:11px}.filter.active{background:#2479b8;border-color:#55a9e7;color:white}.search{display:flex;align-items:center;gap:8px;background:#0d1b2b;border:1px solid #263e57;border-radius:8px;padding:0 10px;color:#7894af}.search input{width:210px;max-width:35vw;background:transparent;border:0;outline:0;color:white;padding:10px 0;font-size:11px}.server-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.server-card{border:1px solid #213a54;background:linear-gradient(120deg,#102239,#0d1929);border-radius:12px;padding:16px}.server-top{display:flex;align-items:start;justify-content:space-between;gap:10px}.server-name{font-size:15px;font-weight:850}.server-map{color:#8ea5be;font-size:11px;margin-top:2px}.mode{background:#163957;color:#88ceff;border-radius:6px;padding:5px 8px;font-size:10px;font-weight:800}.server-meta{display:flex;align-items:center;gap:8px;margin-top:13px;flex-wrap:wrap}.status{font-size:10px;color:var(--gold)}.status.online{color:var(--green)}.tiny-tag{font-size:9px;border:1px solid #2a4159;color:#9cb1c8;border-radius:5px;padding:3px 6px}.ip-line{font-size:11px;color:#a9bfd4;margin-top:10px;overflow-wrap:anywhere}.server-actions{display:flex;gap:8px;margin-top:13px}.server-actions button{flex:1;padding:9px 7px;border-radius:7px;border:1px solid #2a435d;background:#11243a;color:#cfdeed;font-size:10px;font-weight:800;cursor:pointer}.server-actions .join{background:#1c6ca6;border-color:#2c8acb;color:white}.server-actions button:disabled{opacity:.4;cursor:not-allowed}.footnote{font-size:11px;color:#8299b2;margin:13px 1px 0;line-height:1.7}.footnote b{color:#c3d5e7}.skin-layout{display:grid;grid-template-columns:150px 1fr;gap:14px}.skin-categories{display:grid;align-content:start;gap:7px}.skin-categories button{padding:11px;text-align:left;border:1px solid #263f59;border-radius:8px;background:#0d1b2b;color:#a8bdd2;cursor:pointer;font-size:11px}.skin-categories button.active{background:#173a58;color:#fff;border-color:#397caf}.skin-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.skin-item{min-width:0;text-align:left;padding:10px;border:1px solid #243d57;border-radius:10px;background:linear-gradient(140deg,#12263b,#0d1928);color:white;cursor:pointer}.skin-item.selected{border-color:#62bdff;box-shadow:0 0 0 1px #62bdff30}.skin-art{height:78px;display:grid;place-items:center;border-radius:7px;background:radial-gradient(ellipse,#274d6d,#101c2b 68%);font-size:26px;color:#80caff}.skin-item strong{display:block;font-size:11px;margin-top:9px}.skin-item small{font-size:9px;color:#8fa7c0}.skin-item .select-label{display:block;color:#62bdff;font-size:9px;margin-top:7px}.table-wrap{border:1px solid #203953;border-radius:11px;overflow:auto;background:#0c1928}table{border-collapse:collapse;width:100%;min-width:570px}th,td{padding:13px 16px;text-align:left;border-bottom:1px solid #1b3046}th{font-size:9px;letter-spacing:1.4px;color:#8198b1;background:#102137}td{font-size:12px}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#11243a}.player{font-weight:800}.sub{display:block;font-size:9px;color:#8097b0;font-weight:400}.rank-pill{display:inline-block;border:1px solid #37536e;border-radius:5px;padding:4px 6px;font-size:9px;color:#b8d4ed}.rank-global{color:#ffce77;border-color:#876432;background:#382a19}.elo{font-weight:850;color:#8bd0ff}.right{text-align:right}.map-pool{display:flex;flex-wrap:wrap;gap:8px}.map-chip{border:1px solid #2b435d;background:#102137;border-radius:7px;padding:8px 11px;color:#b6c9dc;font-size:11px}.admin-panel{background:#0c1827;border:1px solid #2b4a68;border-radius:13px;padding:22px;margin:10px 0 35px}.admin-panel .section-head{margin-bottom:20px}.demo-tag{font-size:9px;letter-spacing:1px;color:#ffcc80;border:1px solid #705532;border-radius:5px;padding:4px 6px;vertical-align:middle}.admin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.admin-grid label{display:grid;gap:6px;color:#9eb3c9;font-size:10px}.admin-grid input,.admin-grid select{width:100%;background:#081321;border:1px solid #29435c;border-radius:7px;padding:10px;color:#e8f3ff;min-width:0}.admin-actions{display:flex;gap:9px;margin-top:16px}.hidden{display:none!important}footer{padding:24px 0 30px;border-top:1px solid #1c3045;display:flex;align-items:center;justify-content:space-between;gap:15px;color:#6f87a1;font-size:10px}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#173653;border:1px solid #3a6388;border-radius:9px;padding:12px 16px;color:white;font-size:12px;z-index:20;transition:.2s;max-width:92vw}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:850px){nav{display:none}.hero{grid-template-columns:1fr}.hero-art{height:210px}.topbar{padding:0 16px}.online-dot{display:none}.server-grid{grid-template-columns:1fr}.skin-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){main{padding:0 15px}.hero{padding:48px 0}.stats{gap:20px;flex-wrap:wrap}.stats strong{font-size:17px}.section-head,.toolbar{align-items:flex-start;flex-direction:column}.search,.search input{width:100%;max-width:none}.skin-layout{grid-template-columns:1fr}.skin-categories{grid-template-columns:repeat(3,1fr)}.skin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-grid{grid-template-columns:1fr}.admin-actions{flex-wrap:wrap}footer{align-items:flex-start;flex-direction:column}.brand{font-size:19px}}
+
+// LoTuz UI starter. All blank IPs are intentional; configure real servers in config.js.
+const modes = [
+  {key:"all",label:"Бүгд",count:25},
+  {key:"5v5",label:"5v5",count:10},
+  {key:"1v1",label:"1v1",count:3},
+  {key:"2v2",label:"2v2",count:3},
+  {key:"3v3",label:"3v3",count:3},
+  {key:"4v4",label:"4v4",count:3},
+  {key:"fun",label:"Fun 5v5",count:3}
+];
+const mapNames=["de_ancient","de_anubis","de_dust2","de_inferno","de_mirage","de_nuke","de_overpass","de_train","de_vertigo","cs_office","cs_italy","de_cache","de_cbble","de_tuscan","de_season","de_zoo","de_breach","de_edin","de_basalt","de_whistle","de_thera","de_mills"];
+const serverDefinitions=[
+  ...Array.from({length:10},(_,i)=>({id:i+1,mode:"5v5",map:mapNames[i%8],fun:false})),
+  ...Array.from({length:3},(_,i)=>({id:11+i,mode:"1v1",map:["de_mirage","de_dust2","de_aim_map"][i],fun:false})),
+  ...Array.from({length:3},(_,i)=>({id:14+i,mode:"2v2",map:["de_dust2","de_inferno","de_ancient"][i],fun:false})),
+  ...Array.from({length:3},(_,i)=>({id:17+i,mode:"3v3",map:["de_anubis","de_mirage","de_nuke"][i],fun:false})),
+  ...Array.from({length:3},(_,i)=>({id:20+i,mode:"4v4",map:["de_overpass","de_train","de_vertigo"][i],fun:false})),
+  ...Array.from({length:3},(_,i)=>({id:23+i,mode:"fun",map:["de_dust2","de_mirage","de_ancient"][i],fun:true}))
+];
+const servers=serverDefinitions.map(s=>({...s,host:"",port:"27015",status:"offline"}));
+const players=[
+ {name:"Lotuz",elo:7240,wins:142,losses:58},{name:"NightOwl",elo:6815,wins:126,losses:64},
+ {name:"N0va",elo:5900,wins:101,losses:55},{name:"Steppe",elo:4780,wins:83,losses:61},
+ {name:"GhostMGL",elo:3990,wins:76,losses:69},{name:"Khan",elo:3180,wins:62,losses:60},
+ {name:"Pixel",elo:2460,wins:49,losses:53},{name:"Tenger",elo:1680,wins:35,losses:44},{name:"Rookie",elo:1000,wins:0,losses:0}
+];
+const skins=[
+ {name:"AK-47 | Neon Circuit",type:"Rifle",icon:"◈",rarity:"Custom concept"},
+ {name:"AK-47 | Crimson Byte",type:"Rifle",icon:"◈",rarity:"Custom concept"},
+ {name:"M4A1-S | Blue Phantom",type:"Rifle",icon:"◇",rarity:"Custom concept"},
+ {name:"M4A4 | Arctic Pulse",type:"Rifle",icon:"◇",rarity:"Custom concept"},
+ {name:"AWP | Night Signal",type:"Sniper",icon:"⌁",rarity:"Custom concept"},
+ {name:"AWP | Solar Flare",type:"Sniper",icon:"⌁",rarity:"Custom concept"},
+ {name:"Desert Eagle | Gold Rush",type:"Pistol",icon:"✦",rarity:"Custom concept"},
+ {name:"Glock-18 | Cyber Bloom",type:"Pistol",icon:"✧",rarity:"Custom concept"},
+ {name:"Karambit | Ice Shard",type:"Knife",icon:"⟋",rarity:"Custom concept"},
+ {name:"Butterfly | Redline",type:"Knife",icon:"⟋",rarity:"Custom concept"},
+ {name:"M9 Bayonet | Aurora",type:"Knife",icon:"⟋",rarity:"Custom concept"},
+ {name:"Gloves | Neon Grid",type:"Gloves",icon:"✣",rarity:"Custom concept"}
+];
+let modeFilter="all",skinFilter="All",sortDown=true,selectedSkin=skins[0].name;
+const $=s=>document.querySelector(s);
+function toast(s){let el=$("#toast");el.textContent=s;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),3200)}
+function rank(elo){return elo>=7000?"GLOBAL":elo>=4500?"DIAMOND":elo>=2500?"GOLD":elo>=1000?"SILVER":"BRONZE"}
+function renderFilters(){$("#modeFilters").innerHTML=modes.map(m=>`<button class="filter ${m.key===modeFilter?"active":""}" data-mode="${m.key}">${m.label} <span>${m.count}</span></button>`).join("");document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{modeFilter=b.dataset.mode;renderFilters();renderServers()})}
+function renderServers(){let q=$("#serverSearch").value.toLowerCase();let list=servers.filter(s=>(modeFilter==="all"||s.mode===modeFilter)&&(`lotuz ${String(s.id).padStart(2,"0")} ${s.mode} ${s.map}`.toLowerCase().includes(q)));$("#serverCount").textContent=list.length;$("#serverGrid").innerHTML=list.map(s=>{let addr=s.host?`${s.host}:${s.port}`:"IP тохируулаагүй";let configured=!!s.host;return `<article class="server-card"><div class="server-top"><div><div class="server-name">LoTuz #${String(s.id).padStart(2,"0")}</div><div class="server-map">${s.map}</div></div><span class="mode">${s.mode==="fun"?"FUN 5v5":s.mode}</span></div><div class="server-meta"><span class="status ${configured&&s.status==="online"?"online":""}">● ${configured&&s.status==="online"?"ONLINE (demo)": "OFFLINE / NOT CONFIGURED"}</span><span class="tiny-tag">${s.fun?"Fun mode":"Competitive"}</span><span class="tiny-tag">CS2</span></div><div class="ip-line">IP: ${addr}</div><div class="server-actions"><button class="join" data-join="${s.id}" ${!configured?"disabled":""}>CONNECT ↗</button><button data-copy="${s.id}" ${!configured?"disabled":""}>COPY IP</button><button data-ready="${s.id}">.r / READY</button></div></article>`}).join("")||'<p class="muted">Сервер олдсонгүй.</p>';
+document.querySelectorAll("[data-join]").forEach(b=>b.onclick=()=>{let s=servers.find(x=>x.id===+b.dataset.join);if(s?.host)location.href=`steam://connect/${s.host}:${s.port}`});
+document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async()=>{let s=servers.find(x=>x.id===+b.dataset.copy);try{await navigator.clipboard.writeText(`${s.host}:${s.port}`);toast("IP хууллаа")}catch{toast(`${s.host}:${s.port}`)}});
+document.querySelectorAll("[data-ready]").forEach(b=>b.onclick=()=>toast("Тоглоом дотор .r командыг ажиллуулахын тулд серверийн plugin тохируулах шаардлагатай."))}
+function renderPlayers(){let q=$("#playerSearch").value.toLowerCase();let list=players.filter(p=>p.name.toLowerCase().includes(q)).sort((a,b)=>sortDown?b.elo-a.elo:a.elo-b.elo);$("#leaderboard").innerHTML=list.map((p,i)=>`<tr><td>${i+1}</td><td><span class="player">${p.name}</span><span class="sub">LoTuz player · demo</span></td><td><span class="rank-pill ${p.elo>=7000?"rank-global":""}">${rank(p.elo)}</span></td><td>${p.wins}</td><td>${p.losses}</td><td class="right elo">${p.elo.toLocaleString()}</td></tr>`).join("")||'<tr><td colspan="6">Тоглогч олдсонгүй.</td></tr>'}
+function renderSkins(){let cats=["All","Rifle","Sniper","Pistol","Knife","Gloves"];$("#skinCategories").innerHTML=cats.map(c=>`<button class="${skinFilter===c?"active":""}" data-skin-cat="${c}">${c}</button>`).join("");document.querySelectorAll("[data-skin-cat]").forEach(b=>b.onclick=()=>{skinFilter=b.dataset.skinCat;renderSkins()});let list=skins.filter(s=>skinFilter==="All"||s.type===skinFilter);$("#skinGrid").innerHTML=list.map(s=>`<button class="skin-item ${selectedSkin===s.name?"selected":""}" data-skin="${s.name}"><span class="skin-art">${s.icon}</span><strong>${s.name}</strong><small>${s.rarity}</small><span class="select-label">${selectedSkin===s.name?"✓ SELECTED":"SELECT SKIN"}</span></button>`).join("");document.querySelectorAll("[data-skin]").forEach(b=>b.onclick=()=>{selectedSkin=b.dataset.skin;renderSkins()})}
+function renderMaps(){$("#mapPool").innerHTML=mapNames.map(m=>`<span class="map-chip">${m}</span>`).join("")}
+function setupAdmin(){const select=$("#adminServer");select.innerHTML=servers.map(s=>`<option value="${s.id}">LoTuz #${String(s.id).padStart(2,"0")} — ${s.mode}</option>`).join("");$("#adminMap").innerHTML=mapNames.map(m=>`<option>${m}</option>`).join("");function load(){let s=servers.find(x=>x.id===+select.value);$("#adminMap").value=s.map;$("#adminIp").value=s.host;$("#adminPort").value=s.port;$("#adminStatus").value=s.status}select.onchange=load;load();$("#applyAdmin").onclick=()=>{let s=servers.find(x=>x.id===+select.value);let host=$("#adminIp").value.trim();if(host&&!/^[a-zA-Z0-9.-]+$/.test(host)){toast("IP эсвэл hostname буруу байна.");return}let port=+$("#adminPort").value||27015;if(port<1||port>65535){toast("Port 1–65535 хооронд байх ёстой.");return}s.host=host;s.port=String(port);s.map=$("#adminMap").value;s.status=$("#adminStatus").value;renderServers();toast("Зөвхөн энэ хуудсанд demo тохиргоо шинэчлэгдлээ.")};$("#exportConfig").onclick=()=>{let blob=new Blob([JSON.stringify({servers:servers.map(({id,mode,map,host,port,status,fun})=>({id,mode,map,host,port,status,fun}))},null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="lotuz-demo-config.json";a.click();URL.revokeObjectURL(a.href)}}
+$("#serverSearch").addEventListener("input",renderServers);$("#playerSearch").addEventListener("input",renderPlayers);$("#steamLogin").onclick=()=>toast("Steam OpenID backend холбогдоогүй. Steam нууц үгээ энэ сайтад бүү оруул.");$("#adminToggle").onclick=()=>{$("#admin").classList.toggle("hidden");if(!$("#admin").classList.contains("hidden"))$("#admin").scrollIntoView({behavior:"smooth"})};$("#closeAdmin").onclick=()=>$("#admin").classList.add("hidden");$("#saveSkin").onclick=()=>toast(`Сонгосон skin: ${selectedSkin}. Тоглоомд хэрэгжүүлэх server plugin хараахан холбогдоогүй.`);
+renderFilters();renderServers();renderPlayers();renderSkins();renderMaps();setupAdmin();
+
+# LoTuz Competitive Platform — Front-end starter
+
+This is a local website prototype for the requested LoTuz layout:
+- 25 server cards: 10 × 5v5, 3 × 1v1, 3 × 2v2, 3 × 3v3, 3 × 4v4, 3 × Fun 5v5
+- Mode filters, map pool, copy-IP and `steam://connect` buttons (enabled only after an IP is configured in the page demo)
+- Sample 1–10,000 ELO leaderboard with Global at 7,000+
+- Skin-selection UI, `.r / READY` placeholder, and demo admin panel
+- Exportable demo server config
+
+## Open
+Extract ZIP and open `index.html` in a browser. No build step is required.
+
+## Important: not yet a live service
+The server cards intentionally start without IP addresses. This site does NOT provision, host, or run CS2 dedicated servers. To make players really join, you must rent or run 25 CS2 servers (or initially fewer), configure public IPs/ports and firewall/UDP access, and populate the real addresses. A server panel can automate deployment, but it requires hosting access.
+
+The Admin panel is explicitly demo-only. It is not authentication, does not persist data to a database, and does not remotely change a server. Never expose admin credentials in frontend JavaScript. Implement admin authorization on a backend and verify admin SteamID server-side.
+
+## Required production components
+1. **Hosting:** a Linux/Windows host or game-server provider with enough resources and network capacity. 25 separate game instances may be expensive; start with a small number and scale.
+2. **CS2 servers:** SteamCMD + CS2 Dedicated Server, unique ports/configs per instance. Use server query APIs or a backend status checker for truthful online/player/map data.
+3. **Steam sign-in:** implement Steam OpenID on the backend. Validate the response server-side and store SteamID only; never collect Steam passwords.
+4. **ELO:** persist ratings/matches in a database. Start at 1000, clamp 1–10000, Global at 7000+. Only update after a verified server-side match result; add anti-abuse and rate limits.
+5. **Maps:** a map appearing in the UI does not mean it is installed on a server. Install and test each supported map and set its actual map name.
+6. **Skins/custom models:** the current skin gallery is illustrative. In-game cosmetics need compatible server plugins and assets. Custom models/materials may require clients to download content or may be limited by game/server rules. Do not claim a skin is applied until the plugin confirms it.
+7. **Ready command:** `.r` is a placeholder. Configure a compatible CS2 plugin to recognize `.r`/`!ready`, manage ready states, and start the match only when the required players are ready.
+8. **Fun modes:** install and test compatible server plugins/configs for each fun mode; a UI label alone does not create a game mode.
+
+## Safety and honesty
+Do not publish sample player names/ranks as real statistics. Keep this prototype's demo labels until real backend data is connected. Do not store Steam passwords or secret keys in this directory.
+
+
+## Publish so people can search for “LoTuz”
+This project is currently a static front-end. It must be deployed to a public hosting service before it can appear in Chrome/Google search.
+1. Upload this folder to a static host (for example GitHub Pages, Netlify, or Cloudflare Pages).
+2. Choose a public site address or connect a domain you own, e.g. `lotuz.example` (example only; not a real available domain).
+3. Add the published site to Google Search Console and verify ownership.
+4. Submit the site's sitemap if you create one, and request indexing for the homepage.
+5. Search indexing is not immediate and cannot be guaranteed. In the meantime, people can open the direct public URL or bookmark it.
